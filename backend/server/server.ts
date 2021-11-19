@@ -50,7 +50,12 @@ app.use(cookieParser(env.passwordCookie));
 app.use(helmet())
 app.use(compression());
 app.use(express.json());
-app.use(express.static(publicPath));
+app.use(express.static(publicPath,{
+    setHeaders: function (res :any, _path :any, stat :any) {
+        res.set('x-timestamp', Date.now());
+        res.contentType(path.basename(_path));       
+      }
+}));
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}))
 // app.use(requestIp.mw());
