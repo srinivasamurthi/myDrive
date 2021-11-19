@@ -53,6 +53,7 @@ app.use(express.json());
 app.use(express.static(publicPath,{
     setHeaders: function (res :any, _path :any, stat :any) {
         res.set('x-timestamp', Date.now());
+        console.log(_path);
         res.contentType(path.basename(_path));       
       }
 }));
