@@ -45,7 +45,7 @@ module.exports = (env) => {
 
         entry:'./src/app.js',
         output: {
-            path: path.join(__dirname, "public1", "dist"),
+            path: path.join(__dirname, "public1"),
             filename: "bundle.js"
         },
         module: {
@@ -90,7 +90,7 @@ module.exports = (env) => {
                 fonts: [
                     { family: "Roboto", variants: ["100", "300", "400", "500", "700"], display: "swap" }
                 ],
-                outputDir: "/dist/",
+                outputDir: "/",
                 /* ...options */
             })
         ],
@@ -98,7 +98,7 @@ module.exports = (env) => {
         devServer: {
             contentBase: path.join(__dirname, "public1"),
             historyApiFallback: true,
-            publicPath: "/dist/"
+            publicPath: "/"
         },
 
     }
