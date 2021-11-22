@@ -21,7 +21,7 @@ import env from "../enviroment/env";
 // import requestIp from "request-ip";
 
 const app = express();
-const publicPath = path.join(__dirname, "..", "..", "public");
+const publicPath = path.join(__dirname, "..", "..", "public1");
 
 let server: any;
 let serverHttps: any;
