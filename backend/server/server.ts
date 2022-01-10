@@ -21,7 +21,7 @@ import env from "../enviroment/env";
 // import requestIp from "request-ip";
 
 const app = express();
-const publicPath = path.join(__dirname, "..", "..", "public1");
+const publicPath = path.join(__dirname, "..", "..", "public");
 
 let server: any;
 let serverHttps: any;
@@ -50,21 +50,14 @@ app.use(cookieParser(env.passwordCookie));
 app.use(helmet())
 app.use(compression());
 app.use(express.json());
-app.use(express.static(publicPath,{
-    setHeaders: function (res :any, _path :any, stat :any) {
-        res.set('x-timestamp', Date.now());
-        console.log(_path);
-        res.contentType(path.basename(_path));       
-      }
-}));
+app.use(express.static(publicPath));
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}))
 // app.use(requestIp.mw());
 
 app.use(busboy({
-    headers : { 'content-type': 'test' },
     highWaterMark: 2 * 1024 * 1024,
-    
+    headers : { 'content-type': 'test' },    
 }));
 
 app.use(userRouter, fileRouter, folderRouter, storageRouter, googleFileRouter, personalFileRouter, googleFolderRouter, userPersonalRouter, userGoogleRouter);

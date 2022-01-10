@@ -1,7 +1,9 @@
+import { ifStatement } from "@babel/types";
+
 const defaultState = {
     name: "",
     id: "",
-    selected: "",
+    selected: [],
     rightSelected: "",
     shareSelected: "",
     selectedItem: "",
@@ -15,10 +17,17 @@ export default (state = defaultState, action) => {
 
         case "SET_SELECTED":
 
+        if(state.selected.includes(action.selected))    
             return {
                 ...state,
-                selected: action.selected
+                selected: state.selected.filter(item => item !== action.selected)
             }
+        
+        else 
+            return {
+            ...state,
+            selected: [...state.selected, action.selected]
+        }
 
         case "SET_SELECTED_ITEM":
         
@@ -73,7 +82,7 @@ export default (state = defaultState, action) => {
             
             return {
                 ...state,
-                selected: ""
+                selected: [],
             }
 
 

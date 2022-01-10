@@ -12,6 +12,7 @@ class FolderTreeStorageContainer extends React.Component {
 
         this.state = {
             folders: [],
+            files:[],
             open: true,
         }
 
@@ -26,11 +27,26 @@ class FolderTreeStorageContainer extends React.Component {
         const url = this.props.type === "drive" ? `/folder-service-google/list?parent=${parent}` 
         : `/folder-service/list?parent=${parent}&type=${this.props.type}`; 
 
-        axios.get(url).then((response) => {
+        const url1 = this.props.type === "drive" ? `/file-service-google/list?parent=${parent}` 
+        : `/file-service/list?parent=${parent}&type=${this.props.type}`; 
 
+        axios.get(url).then((response) => {
+            console.log("response.data", response.data)
             this.setState(() => {
                 return {
                     folders: response.data,
+                    open: true
+                }
+            }, () => {
+                this.ignoreReset = false;
+            })
+        })
+
+        axios.get(url1).then((response) => {
+            console.log("response.data", response.data)
+            this.setState(() => {
+                return {
+                    files: response.data,
                     open: true
                 }
             }, () => {
@@ -72,42 +88,46 @@ class FolderTreeStorageContainer extends React.Component {
         this.getFolders();
     }
 
-    componentDidUpdate = () => {
+    // componentDidUpdate = () => {
 
-        if (this.props.firstLoadDetails.status === "RESET" && !this.ignoreReset) {
-            this.ignoreReset = true;
-            this.getFolders();
-            return;
-        }
+    //     if (this.props.firstLoadDetails.status === "RESET" && !this.ignoreReset) {
+    //         this.ignoreReset = true;
+    //         this.getFolders();
+    //         return;
+    //     }
     
-        if (this.updated) return;
+    //     if (this.updated) return;
 
-        this.updated = true;
+    //     this.updated = true;
 
-        if (this.props.firstLoadDetails === "root" || this.props.firstLoadDetails === "/" || !this.props.firstLoadDetails._id) return;
+    //     if (this.props.firstLoadDetails === "root" || this.props.firstLoadDetails === "/" || !this.props.firstLoadDetails._id) return;
 
-        if (this.props.firstLoadDetails.isGoogle) {
-            if (this.props.type !== "drive") return;
-        } else if (this.props.firstLoadDetails.isPersonal) {
-            if (this.props.type !== "s3") return;
-        } else {
-            if (this.props.type !== "mongo") return;
-        }
+    //     if (this.props.firstLoadDetails.isGoogle) {
+    //         if (this.props.type !== "drive") return;
+    //     } else if (this.props.firstLoadDetails.isPersonal) {
+    //         if (this.props.type !== "s3") return;
+    //     } else {
+    //         if (this.props.type !== "mongo") return;
+    //     }
 
-        const id = this.props.firstLoadDetails._id;
+    //     const id = this.props.firstLoadDetails._id;
 
-        const url = (this.props.type === "drive") 
-        ? `/folder-service-google/subfolder-list-full?id=${id}` : `/folder-service/subfolder-list-full?id=${id}`
+    //     const url = (this.props.type === "drive") 
+    //     ? `/folder-service-google/subfolder-list-full?id=${id}` : `/folder-service/subfolder-list-full?id=${id}`
 
-        axios.get(url).then((response) => {
-            if (response.data.length !== 0) {
-                const id = response.data[0]._id;
-                this.props.dispatch(setInsertedFolderTreeID(id, response.data))
-            }
-        })
-    }
+    //     axios.get(url).then((response) => {
+    //         console.log("response.data1", response.data)
+    //         if (response.data.length !== 0) {
+    //             const id = response.data[0]._id;
+    //             this.props.dispatch(setInsertedFolderTreeID(id, response.data))
+    //         }
+    //     })
+    // }
 
     render() {
+
+        // console.log("state.folder", this.state.folders)
+        // console.log("state.files", this.state.files)
 
         return <FolderTreeStorage arrowClick={this.arrowClick} state={this.state} {...this.props}/>
     }

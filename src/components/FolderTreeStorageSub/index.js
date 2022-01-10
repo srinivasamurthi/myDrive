@@ -6,6 +6,11 @@ import {history} from "../../routers/AppRouter";
 import {connect} from "react-redux"
 import FolderTreeStorageSub2 from ".././FolderTreeStorageSub";
 import FolderTreeStorageSub from "./FolderTreeStorageSub";
+import FolderTreeStorageFile from "../FolderTreeStroageFile";
+
+import {setViewContent, removeViewContent} from "../../actions/viewFileContent";
+
+import MuiTypography from '@material-ui/core/Typography';
 
 class FolderTreeStorageSubContainer extends React.Component {
     
@@ -14,6 +19,7 @@ class FolderTreeStorageSubContainer extends React.Component {
 
         this.state = {
             folders: [],
+            files:[],
             open: false,
             loaded: false,
             forceUpdate: ""
@@ -236,6 +242,8 @@ class FolderTreeStorageSubContainer extends React.Component {
         const id = this.props.folder._id;
         const folderPush = this.props.type === "drive" ? `/folder-google/${id}` : this.props.type === "mongo" ? `/folder/${id}` : `/folder-personal/${id}`;
         history.push(folderPush)
+
+        this.props.dispatch(removeViewContent())
     }
 
     getFolders = () => {
@@ -243,6 +251,8 @@ class FolderTreeStorageSubContainer extends React.Component {
         const parent = this.props.folder._id;
         
         const url = this.props.type === "drive" ? `/folder-service-google/list?parent=${parent}` : `/folder-service/list?parent=${parent}`;
+        const url1 = this.props.type === "drive" ? `/file-service-google/list?parent=${parent}` 
+        : `/file-service/list?parent=${parent}&type=${this.props.type}`; 
         axios.get(url).then((response) => {
 
             this.setState(() => {
@@ -252,6 +262,21 @@ class FolderTreeStorageSubContainer extends React.Component {
                     loaded: true
                 }
             })
+
+            
+        })
+
+        axios.get(url1).then((response) => {
+console.log("new.response.data", response.data)
+            this.setState(() => {
+                return {
+                    files: response.data,
+                    open: true,
+                    loaded: true
+                }
+            })
+
+            
         })
     }
 
@@ -270,18 +295,60 @@ class FolderTreeStorageSubContainer extends React.Component {
         }
     }
 
+    handleOpenFile = (file) => {
+
+        console.log("dsas", file)
+
+        const filenameSplit = file.filename.split(".");
+
+        console.log("filenameSplit", filenameSplit)
+        
+        let fileType;
+        if (filenameSplit.length > 1) {
+            const extension = filenameSplit[filenameSplit.length - 1]
+            fileType = extension.toUpperCase();
+        }
+
+        console.log("fileTYYP", fileType)
+
+        if(fileType === "JPG" || fileType === "PDF" || fileType === "DOC" || fileType === "DOCX" || fileType === "PNG"){
+            this.props.dispatch(setViewContent(file,true))       
+           }
+     
+           else{
+             this.props.dispatch(setViewContent(file,false))
+           }
+    }
+
     renderFolders = () => {
 
         this.cachedFolders = {}
 
-        return this.state.folders.map((folder) => {
-            this.cachedFolders[folder._id] = true;
-            return <FolderTreeStorageSub2 key={folder._id} folder={folder} type={this.props.type}/>
-        })
+        return (
+            <div>
+
+                {
+                    this.state.files.map((file) => {
+                        return <FolderTreeStorageFile openFile={this.handleOpenFile} file={file} />
+                    })
+                }
+
+                {
+                    this.state.folders.map((folder) => {
+                        this.cachedFolders[folder._id] = true;
+                        return <FolderTreeStorageSub2 key={folder._id} folder={folder} type={this.props.type}/>
+                    })
+                }
+
+
+            </div>
+        )
     }
 
     render () {
 
+        // console.log("render.state.folders", this.state.folders)
+        // console.log("render.state.files", this.state.files)
         return (
 
             <FolderTreeStorageSub 

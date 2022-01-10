@@ -14,6 +14,8 @@ import React from "react";
 
 const currentURL = env.url;
 
+
+
 class HeaderContainer extends React.Component {
 
     constructor(props) {
@@ -29,7 +31,8 @@ class HeaderContainer extends React.Component {
             }
         }
     }
-    
+
+      
     searchEvent = (e) => {
         e.preventDefault();
 

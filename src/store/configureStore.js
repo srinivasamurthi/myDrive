@@ -19,6 +19,8 @@ import moverReducer from "../reducers/mover";
 import folderTreeReducer from "../reducers/folderTree"
 import uploadStorageSwitcherReducer from "../reducers/uploadStorageSwitcher";
 import mobileContextMenuReducer from "../reducers/mobileContextMenu";
+import viewFileContentReducer from "../reducers/viewFileContent";
+import viewModeReducer from "../reducers/viewMode";
 
 //const composeEnchancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -45,6 +47,8 @@ export default () => {
             folderTree: folderTreeReducer,
             storageSwitcher: uploadStorageSwitcherReducer,
             mobileContextMenu: mobileContextMenuReducer,
+            viewFileContent: viewFileContentReducer,
+            viewMode : viewModeReducer,
         }),
 
         applyMiddleware(thunk)

@@ -8,7 +8,6 @@ const FolderTreeStorageSub = (props) => (
                         <img onClick={(e) => {props.skipUpdate=false; props.clickEvent(e)}} className="folder-tree-sub__storage__image" src="/assets/arrowstructure.svg" style={props.state.open ? {'transform': 'rotate(90deg)'} : {}}/>
                     </div>
                     <div className="folder-tree-sub__icon-wrapper">
-                        <img className="folder-tree-sub__icon" src={props.selectedID === props.folder._id ? "/images/folder-svg-purple.svg" : "/images/folder-svg.svg"}/>
                     </div>
                     <div className="folder-tree-sub__storage__text-div">
                         <p style={props.selectedID === props.folder._id ? {color:"#3c85ee"} : {}} onClick={props.folderClick} className="folder-tree-sub__storage__text">{props.folder.name}</p>

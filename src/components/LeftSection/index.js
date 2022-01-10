@@ -7,7 +7,11 @@ import {connect} from "react-redux";
 import React from "react";
 import { openUploadOverlay, setLeftSectionMode } from "../../actions/main";
 
+
+
+
 class LeftSectionContainer extends React.Component {
+   
 
     constructor(props) {
         super(props);
@@ -22,6 +26,9 @@ class LeftSectionContainer extends React.Component {
             hideFolderTree: false,
         }
     }
+     handleDrawerClose = () => {
+        setOpen(false);
+      };
 
     createFolder = async(e) => {
 
@@ -111,7 +118,8 @@ class LeftSectionContainer extends React.Component {
 
     render() {
 
-        return <LeftSection 
+        
+        return  <LeftSection style = {{backgroundColor:"#808080"}}
                     addButtonEvent={this.addButtonEvent}
                     wrapperRef={this.wrapperRef}
                     uploadInput={this.uploadInput}
@@ -122,6 +130,12 @@ class LeftSectionContainer extends React.Component {
                     leftSectionRef={this.leftSectionRef}
                     state={this.state}
                     {...this.props}/>
+                   
+
+      
+
+        
+       
     }
 }
 
