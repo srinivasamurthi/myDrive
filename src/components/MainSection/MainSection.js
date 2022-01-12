@@ -4,20 +4,56 @@ import MoverMenu from ".././MoverMenu";
 import PopupWindow from '.././PopupWindow'
 import React from "react";
 
+import GridView from "../GridView"
+
+import {connect} from "react-redux";
+
+import ViewFiles from "../ViewFiles";
+import Properties from "../Properties";
 
 const MainSection = React.forwardRef((props, ref) => {
 
+    const viewMode = () => {
+        
+        switch( props.viewType){
+            case "list" :
+                return (
+                    <DataForm
+                    folderClick={props.folderClick}
+                    fileClick={props.fileClick}
+                    downloadFile={props.downloadFile}/> 
+                )
+
+            case "grid" :
+                return(
+                <GridView 
+             folderClick={props.folderClick}
+        fileClick={props.fileClick}
+        downloadFile={props.downloadFile}
+        />
+                )
+        
+        case "properties" :
+            return(
+                <Properties/>
+            )
+        default: 
+        return null
+        
+            }
+        
+    }
+
     return (
 
-        <div class="content__block">
-                <div className="overlay" style={(props.leftSectionMode === "open" || props.rightSectionMode === "open") ? {display:"block"} : {display:"none"}}>
-        
-                </div>
-				<div class="small__switcher--content">
+        <div class="content__block" style={{backgroundColor:"#808080"}}>
+                <div className="overlay" style={{backgroundColor:"#808080"}} style={(props.leftSectionMode === "open" || props.rightSectionMode === "open") ? {display:"block"} : {display:"none"}}>
+        </div>
+				{/* <div class="small__switcher--content">
 					<a onClick={props.switchLeftSectionMode} class="menu__button"><i class="fas fa-bars"></i></a>
 					<a onClick={props.switchRightSectionMode} class="image__viewer"><i class="fas fa-images"></i></a>
-				</div>
-				<div class="file__container" style={props.routeType === "search" ? {flexDirection: "column"} : {flexDirection:"row"}}>
+				</div> */}
+				<div class="file__container" backgroundColor="#808080" style={props.routeType === "search" ? {flexDirection: "column"} : {flexDirection:"row"}}>
 
 					{true ? undefined : <div class="file__control--panel empty__control--panel">
 						<div class="file__get--started">
@@ -39,14 +75,29 @@ const MainSection = React.forwardRef((props, ref) => {
 
                     {props.showPopup ? <PopupWindow downloadFile={props.downloadFile} /> : undefined}
                     
-                    {props.moverID.length === 0 ? undefined :
+                    {/* {props.moverID.length === 0 ? undefined :
                     <MoverMenu />
-                    }
+                    } */}
 
-                    <DataForm
+{
+           props.fileOpenBoolean ?
+        <div  style={{width:"1250px", height:"800px", backgroundColor:"#808080"}}>
+
+          <div style={{height:"800px", width:"1300px", backgroundColor:"#808080" }}>
+             <ViewFiles item={props.viewContent}/>
+            </div>
+          </div>
+          :
+         viewMode()
+
+ }
+
+                        <RightSection  
                         folderClick={props.folderClick}
                         fileClick={props.fileClick}
-                        downloadFile={props.downloadFile}/>               
+                        downloadFile={props.downloadFile}
+                        /> 
+                               
 				</div>
 		</div>
 
@@ -55,4 +106,11 @@ const MainSection = React.forwardRef((props, ref) => {
 })
 
 
-export default MainSection
+const mapStateToProp = (state) => ({
+        viewContent : state.viewFileContent.viewContent,
+        modalOpenBoolean : state.viewFileContent.modalOpenBoolean,
+        fileOpenBoolean : state.viewFileContent.fileOpenBoolean,
+        viewType : state.viewMode.viewType,
+    })
+
+export default connect(mapStateToProp) (MainSection);

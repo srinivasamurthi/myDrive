@@ -19,12 +19,14 @@ class RightSection extends React.Component {
                 
                 <div class="file__details--inner">
                     <span><img src="/assets/filedetailsicon.svg" alt="filedetailsicon"/></span>
-                    <p>Select a file or folder to  view it’s details</p>
+                    <Typography style={{color:"white"}}>
+                        Select a file or folder to  view it’s details
+                    </Typography>
                 </div>
     
                 :
     
-                <div class="file__info--wrap">
+                <div class="file__info--wrap" style={{backgroundColor:"gray"}} >
                     <img className={this.props.selected === "" ? "section__title-image section__title-image--gone" : "section__title-image"} src="/images/close_icon.png" onClick={this.props.resetSelected}/>
                    <div class="file__type">
                         <img src="/assets/typedetailed1.svg" alt="typedetailed1"/>

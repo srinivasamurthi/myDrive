@@ -17,8 +17,14 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MuiFileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import MuiCropIcon from '@material-ui/icons/Crop';
 
+import axios from "../../axiosInterceptor";
+
 import {useState} from "react";
 
+import Swal from "sweetalert2";
+import {editFileMetadata, startRemoveFile, startRenameFile} from "../../actions/files"
+import { startRemoveFolder, startRenameFolder } from "../../actions/folders";
+import {connect} from "react-redux";
 
 function Actions (props) {
 
@@ -34,11 +40,54 @@ function Actions (props) {
     setOpenMoreOption(false)
   }
 
+  const downloadSelected = () => {
+    const isGoogle = props.item.metadata.drive;
+    const isGoogleDoc = props.item.metadata.googleDoc;
+    const isPersonal = props.item.metadata.personalFile;  
+  
+    const url = isGoogle ? `/file-service-google/full-thumbnail/${props.item._id}` 
+          : !isPersonal ? `/file-service/full-thumbnail/${props.item._id}` : `/file-service-personal/full-thumbnail/${props.item._id}`;
+    
+          axios.get(url).then((response) => {
+
+            const link = document.createElement('a');
+            document.body.appendChild(link);
+            link.href = url;
+            link.setAttribute('type', 'hidden');
+            link.setAttribute("download", true);
+            link.click();
+          })
+  }
+
+  const deleteItem = async() => {
+
+    const parent = props.item.metadata.parent;
+
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: "You cannot undo this action",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete'
+      }).then((result) => {
+        if (result.value) {
+
+            // props.item ? 
+            props.dispatch(startRemoveFile(props.item._id, props.item.metadata.drive, props.item.metadata.personalFile)) 
+            // :
+            // props.dispatch(startRemoveFolder(props.item.id, [...props.item.data.parentList, this.props.item.id], this.props.item.drive, parent, props.item.data.metadata.personalFolder));
+        }
+    })
+}
+
+  console.log("item", props.item);
 
     return(
         <div>
-          <MuiIconButton 
-                // onClick={props.downloadSelected}
+          <MuiIconButton disabled={!props.item}
+                onClick={() => downloadSelected(props.item)}
             >
             <MuiGetAppIcon fontSize="medium" />
           </MuiIconButton>
@@ -77,12 +126,13 @@ function Actions (props) {
                     </MuiListItemText>
                   </MuiMenuItem>
                   <MuiMenuItem alignItems='center'
-                    // onClick={props.deleteSelected}
+                    onClick={deleteItem}
+                    disabled={!props.item}
                     >
-                    <MuiListItemIcon>
+                    <MuiListItemIcon >
                       <MuiDeleteForeverIcon fontSize="medium" />
                     </MuiListItemIcon>
-                    <MuiListItemText>
+                    <MuiListItemText >
                       Delete
                     </MuiListItemText>
                   </MuiMenuItem>
@@ -95,4 +145,4 @@ function Actions (props) {
     )
 }
 
-export default Actions;
+export default connect()(Actions);

@@ -16,14 +16,14 @@ class LeftSection extends React.Component {
 
         return (
 
-           <div className="menu__block" ref={this.props.leftSectionRef} style={this.props.leftSectionMode === '' ? {} : this.props.leftSectionMode === 'open' ? {left: "0px"} : {left:"-290px"}}>
-                <div class="navigation__block">
-					<div class="add__new">
-						<a onClick={this.props.showDropDown}>
+           <div className="menu__block"  ref={this.props.leftSectionRef} style={this.props.leftSectionMode === '' ? {} : this.props.leftSectionMode === 'open' ? {left: "0px"} : {left:"-290px"}, {display:"contents"},{backgroundColor:"gray"} }>
+                <div class="navigation__block" style={{backgroundColor:"gray"}}>
+					{/* <div class="add__new"> */}
+						{/* <a onClick={this.props.showDropDown}>
 							<p>ADD NEW</p>
 							<span><img src="/assets/dropselect.svg" alt="dropselect"/></span>
-						</a>
-						<div class="dropdown__list" style={this.props.state.open ? {display:"block"} : {display:"none"}}>
+						</a> */}
+						{/* <div class="dropdown__list" style={this.props.state.open ? {display:"block"} : {display:"none"}}>
 							<ul>
 								<li>
                                     {this.isMobile || this.nonDropMode ? 
@@ -47,26 +47,27 @@ class LeftSection extends React.Component {
 									</a>
 								</li>
 							</ul>
-						</div>
-					</div>
-					<div class="page__navigation">
-						<ul>
+						</div>*/}
+					{/* </div>  */}
+					{/* <div class="page__navigation"> */}
+						{/* <ul>
 							<li class="active__page"><a onClick={this.props.goHome}><span><img src="/assets/homea.svg" alt="homeactive"/></span>Home</a></li>
-						</ul>
-					</div>
+						</ul> */}
+					{/* </div> */}
+
                     <UploadStorageSwitcher />
-					<div class="folder__structure">
+					<div class="folder__structure" style={{display:"contents"}}>
 
 						<FolderTree />
 						
 					</div>
-					<div class={this.props.state.hideFolderTree ? "utility__buttons utility__buttons_no_border" : "utility__buttons"}>
-						<ul>
+					{/* <div class={this.props.state.hideFolderTree ? "utility__buttons utility__buttons_no_border" : "utility__buttons"}> */}
+						{/* <ul> */}
 							{/* <li><a href="#"><span><img src="/assets/utility1.svg" alt="utility"/></span> Shared with me</a></li>
 							<li><a href="#"><span><img src="/assets/utility2.svg" alt="utility"/></span> Recent Files</a></li>
 							<li><a href="#"><span><img src="/assets/utility3.svg" alt="utility"/></span> Trash</a></li> */}
-						</ul>
-					</div>
+						{/* </ul> */}
+					{/* </div> */}
 				</div>
 
            </div>

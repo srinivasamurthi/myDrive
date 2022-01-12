@@ -4,8 +4,8 @@ import FolderTreeStorage from ".././FolderTreeStorage"
 
 const FolderTree = (props) => (
 
-    <div className="folder-tree__main">
-        <div className={props.state.showFolderTreeScrollBars ? "folder-tree__box" : "folder-tree__box-hide-scroll-bars"}>
+    <div className="folder-tree__main" style={{backgroundColor:"#808080"}}>
+        <div style={{height:"200px"}}>
 
             {(env.activeSubscription || !env.commercialMode) ? <FolderTreeStorage type={"mongo"}/> : undefined}
             {env.s3Enabled ? <FolderTreeStorage type={"s3"}/> : undefined}

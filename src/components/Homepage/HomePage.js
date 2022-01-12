@@ -16,12 +16,12 @@ const HomePage = (props) => (
 
         <HomepageSpinner />
 
-        <div className="main-wrapper">
+        <div className="main-wrapper" style={{backgroundColor: "#808080"}}>
             <Header goHome={props.goHome}/>
-            <div className="main__wrapper--container" >
+            <div className="main__wrapper--container" style={{backgroundColor: "#808080"}} >
 
-                <LeftSection goHome={props.goHome}/>
-                <MainSection />           
+                {/* <LeftSection goHome={props.goHome}/> */}
+                {/* <MainSection />            */}
                 <Uploader />         
                 {props.photoID.length === 0 ? undefined :
                 <PhotoViewer />}

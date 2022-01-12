@@ -866,8 +866,8 @@ class SettingsPageContainer extends React.Component {
 
 <Header goHome={this.goHome}/>
 
-<div class="main__wrapper--container settings__container" style={this.props.loading ? {display: "none"} : {}}>
-  <div class="menu__block" style={this.state.sideBarOpen ? {left: "0px"} : {left:"-250px"}}>
+<div class="main__wrapper--container settings__container" style={this.props.loading ? {display: "none"} : {}, backgroundColor='#808080'}>
+  <div class="menu__block"  style={this.state.sideBarOpen ? {left: "0px"} : {left:"-250px"},{backgroundColor:"gray"}}>
     <div class="file__settings">
       <div class="back__button">
         <a onClick={this.goHome}>

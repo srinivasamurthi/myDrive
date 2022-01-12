@@ -119,6 +119,8 @@ class DataFormContainer extends React.Component {
     }
 
     render() {
+        console.log("files varun", this.props.files)
+        console.log("folders varun",this.props.folders)
         return <DataForm 
                 {...this.props} 
                 onChangeSelect={this.onChangeSelect} 

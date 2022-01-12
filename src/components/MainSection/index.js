@@ -33,6 +33,7 @@ class MainSectionContainer extends React.Component {
 
             const folderPush = folder.drive ? `/folder-google/${id}` : folder.personalFolder ?  `/folder-personal/${id}` :  `/folder/${id}`;
             history.push(folderPush)
+            console.log("histortww", history)
 
         } else {
 
@@ -250,7 +251,10 @@ class MainSectionContainer extends React.Component {
         }
     }
 
+    
     render() {
+
+        console.log("history", history);
 
         return <MainSection 
                 folderClick={this.folderClick}
