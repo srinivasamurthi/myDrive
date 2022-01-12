@@ -50,7 +50,7 @@ class FileSystemService implements ChunkInterface {
 
         const cipher = crypto.createCipheriv('aes256', CIPHER_KEY, initVect);
 
-        const {file, filename, formData} = await getBusboyData(busboy);
+        const {file, fileobj, formData} = await getBusboyData(busboy);
 
         const parent = formData.get("parent") || "/"
         const parentList = formData.get("parentList") || "/";
@@ -58,7 +58,7 @@ class FileSystemService implements ChunkInterface {
         const personalFile = formData.get("personal-file") ? true : false;
         let hasThumbnail = false;
         let thumbnailID = ""
-        const isVideo = videoChecker(filename)
+        const isVideo = videoChecker(fileobj.filename)
        
         const systemFileName = uuid.v4();
 
@@ -84,7 +84,7 @@ class FileSystemService implements ChunkInterface {
         const encryptedFileSize = await getFileSize(metadata.filePath);
         
         const currentFile = new File({
-            filename,
+            filename : fileobj.filename,
             uploadDate: date.toISOString(),
             length: encryptedFileSize,
             metadata
@@ -98,7 +98,7 @@ class FileSystemService implements ChunkInterface {
  
         if (currentFile.length < 15728640 && imageCheck) {
 
-            const updatedFile = await createThumbnailAny(currentFile, filename, user);
+            const updatedFile = await createThumbnailAny(currentFile, fileobj.filename, user);
 
             return updatedFile;
            

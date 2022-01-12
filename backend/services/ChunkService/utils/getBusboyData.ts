@@ -4,7 +4,7 @@ const getBusboyData = (busboy: any) => {
 
     type dataType = {
         file: Stream,
-        filename: string,
+        fileobj: any,
         formData: Map<any, any>
     }
 
@@ -18,11 +18,11 @@ const getBusboyData = (busboy: any) => {
 
         });
 
-        busboy.on("file", async(_: string, file: Stream, filename: string) => {
+        busboy.on("file", async(_: string, file: Stream, fileobj: any) => {
 
             resolve({
                 file,
-                filename,
+                fileobj,
                 formData
             })
         })

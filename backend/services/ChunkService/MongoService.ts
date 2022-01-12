@@ -35,7 +35,7 @@ class MongoService implements ChunkInterface {
     }
 
     uploadFile = async(user: UserInterface, busboy: any, req: Request) => {
-
+       
         const password = user.getEncryptionKey(); 
 
         if (!password) throw new ForbiddenError("Invalid Encryption Key")
@@ -48,7 +48,9 @@ class MongoService implements ChunkInterface {
 
         const cipher = crypto.createCipheriv('aes256', CIPHER_KEY, initVect);
 
-        const {file, filename, formData} = await getBusboyData(busboy);
+        const {file, fileobj, formData} = await getBusboyData(busboy);
+
+        
 
         const parent = formData.get("parent") || "/"
         const parentList = formData.get("parentList") || "/";
@@ -56,7 +58,7 @@ class MongoService implements ChunkInterface {
         const personalFile = formData.get("personal-file") ? true : false;
         let hasThumbnail = false;
         let thumbnailID = ""
-        const isVideo = videoChecker(filename)
+        const isVideo = videoChecker(fileobj.filename)
 
         const metadata = {
                 owner: user._id,
@@ -71,7 +73,7 @@ class MongoService implements ChunkInterface {
 
         let bucket = new mongoose.mongo.GridFSBucket(conn.db);
                 
-        bucketStream = bucket.openUploadStream(filename, {metadata});
+        bucketStream = bucket.openUploadStream(fileobj.filename, {metadata});
 
         const allStreamsToErrorCatch = [file, cipher, bucketStream];
 
@@ -79,11 +81,11 @@ class MongoService implements ChunkInterface {
 
         await addToStoageSize(user, size, personalFile);
 
-        const imageCheck = imageChecker(filename);
+        const imageCheck = imageChecker(fileobj.filename);
  
         if (finishedFile.length < 15728640 && imageCheck) {
 
-            const updatedFile = await createThumbnailAny(finishedFile, filename, user);
+            const updatedFile = await createThumbnailAny(finishedFile, fileobj.filename, user);
 
             return updatedFile;
            

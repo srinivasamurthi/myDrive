@@ -49,7 +49,7 @@ class S3Service implements ChunkInterface {
 
         const cipher = crypto.createCipheriv('aes256', CIPHER_KEY, initVect);
 
-        const {file, filename, formData} = await getBusboyData(busboy);
+        const {file, fileobj, formData} = await getBusboyData(busboy);
 
         const parent = formData.get("parent") || "/"
         const parentList = formData.get("parentList") || "/";
@@ -57,7 +57,7 @@ class S3Service implements ChunkInterface {
         const personalFile = formData.get("personal-file") ? true : false;
         let hasThumbnail = false;
         let thumbnailID = ""
-        const isVideo = videoChecker(filename)
+        const isVideo = videoChecker(fileobj.filename)
 
         const randomS3ID = uuid.v4();
 
@@ -90,7 +90,7 @@ class S3Service implements ChunkInterface {
         const encryptedFileSize = size;
         
         const currentFile = new File({
-            filename,
+            filename : fileobj.filename,
             uploadDate: date.toISOString(),
             length: encryptedFileSize,
             metadata
@@ -104,7 +104,7 @@ class S3Service implements ChunkInterface {
  
         if (currentFile.length < 15728640 && imageCheck) {
 
-            const updatedFile = await createThumbnailAny(currentFile, filename, user);
+            const updatedFile = await createThumbnailAny(currentFile, fileobj.filename, user);
 
             return updatedFile;
            

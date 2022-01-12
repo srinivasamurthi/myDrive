@@ -54,11 +54,14 @@ app.use(express.static(publicPath));
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}))
 // app.use(requestIp.mw());
-
+/*
 app.use(busboy({
-    highWaterMark: 2 * 1024 * 1024,
-    headers : { 'content-type': 'test' },    
+    //highWaterMark: 2 * 1024 * 1024,
+    //headers : { 'content-type': 'test' },    
 }));
+*/
+
+app.use(busboy());
 
 app.use(userRouter, fileRouter, folderRouter, storageRouter, googleFileRouter, personalFileRouter, googleFolderRouter, userPersonalRouter, userGoogleRouter);
 

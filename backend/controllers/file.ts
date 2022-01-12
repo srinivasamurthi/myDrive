@@ -34,7 +34,6 @@ class FileController {
     chunkService: ChunkServiceType;
 
     constructor(chunkService: ChunkServiceType) {
-
         this.chunkService = chunkService;
     }
 
@@ -93,19 +92,18 @@ class FileController {
             return 
         }
     
-        try {
-
+        try { 
             const user = req.user;
-            const busboy = req.busboy;
-            
+            const busboy = req.busboy;            
             req.pipe(busboy);
     
             const file = await this.chunkService.uploadFile(user, busboy, req);
-         
+
             res.send(file);
             
         } catch (e) {
 
+            console.log(e)
             console.log("\nUploading File Error File Route:", e.message);
             const code = !e.code ? 500 : e.code >= 400 && e.code <= 599 ? e.code : 500;
             res.writeHead(code, {'Connection': 'close'})

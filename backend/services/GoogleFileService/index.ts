@@ -285,7 +285,7 @@ class GoogleFileService {
 
         const streamsToErrorCatch = [req, busboy];
     
-        const {file, filename, formData} = await getBusboyData(busboy);
+        const {file, fileobj, formData} = await getBusboyData(busboy);
     
         let parent = formData.get("parent") || "/"
         const size = formData.get("size") || ""
@@ -301,7 +301,7 @@ class GoogleFileService {
         } 
     
         let fileMetadata: fileMetadataType = {}
-        fileMetadata.name = filename;
+        fileMetadata.name = fileobj.filename;
     
         if (parent !== "/") {
             fileMetadata.parents = [parent]
@@ -334,7 +334,7 @@ class GoogleFileService {
         }
     
         const axiosBody = {
-            name: filename,
+            name: fileobj.filename,
             parents: [parent],
             fields: "*"
         }

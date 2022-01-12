@@ -9,7 +9,7 @@ const serverStart = async() => {
 
     await getKey();
 
-    console.log("ENV", process.env);
+    //console.log("ENV", process.env);
     console.log("ENV", process.env.NODE_ENV);
 
     if (process.env.NODE_ENV === 'production' && process.env.SSL === "true") {
